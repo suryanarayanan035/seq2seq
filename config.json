@@ -1,0 +1,6 @@
+{
+    "data":{
+        "num_csv_header_lines":1,
+        "csv_columns":["text","audio_path"]
+    }
+}
