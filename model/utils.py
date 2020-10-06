@@ -10,7 +10,15 @@ class Vocabulary():
         self.char2idx = defaultdict(lambda: self.vocabulary_size,self.char2idx)
         self.idx2char = defaultdict(lambda:self.vocabulary_size,self.idx2char)
     
-    def text2idx(self,text):
-        encoded = tf.py_function(lambda x:self.char2idx[x.lower()],[text],tf.int64,stateful=False)
+    def toLower(self,text):
+        lower_case = tf.strings.lower(text)
+        encoded = self.char2idx[lower_case.ref()]
         return encoded
+
+    def text2idx(self,text):
+        encoded = tf.py_function(func=self.toLower,inp=[text],Tout=tf.float32,)
+        return encoded
+
     
+    
+

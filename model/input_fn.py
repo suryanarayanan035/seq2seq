@@ -1,24 +1,18 @@
 import tensorflow as tf 
 import librosa
-import json
-from utils import *
 def parse_csv_line(line,vocabulary,config):
 
     #Text file Loading
-    fields = tf.io.decode_csv(line,config['data']['csv_column_defaults'],field_delim="|")
-    print(fields)
+    fields = tf.io.decode_csv(line,config['data']['csv_column_defaults'])
     features = dict(zip(config['data']['csv_columns'],fields))
-    print(features.values())
-    text = tf.compat.v1.string_split([features[config['data']['csv_columns'][1]]],sep="")
-    print(text.shape)
-    text_idx = tf.sparse.SparseTensor(text.indices,tf.map_fn(vocabulary.text2idx,text.values,dtype=tf.float32),[100,100])
-    text_idx = tf.sparse.to_dense(text_idx)
+    text = tf.compat.v1.string_split(features[config['data']['csv_columns'][0]],sep="")
+    text_idx = tf.SparseTensor(text.indices,tf.map_fn(vocabulary.text2idx,text.values,dtype="tf.float32"))
+    text_idx = tf.sparse_tensor_to_dense(text_idx)
     text_idx = tf.squeeze(text_idx)
-    print(text_idx)
 
     #Audio filesloading
-    audio_path = tf.io.read_file(features[config['data']['csv_columns'][0]])
-    waveform = tf.audio.decode_wav(audio_path,desired_samples=config["data"]["sample_rate"])
+    audio_path,sample_rate = tf.read_file(features[config['data']['csv_columns'][1]])
+    waveform =tf.audio.decode_wav(audio_path,desired_samples=config["data"]["sample_rate"])
     stfts = tf.signal.stft(waveform,frame_length = config["data"]["frame_length"],
                            frame_step=config["data"]["frame_step"],fft_length=config["data"]["fft_length"]) 
     magnitude_spectrograms = tf.abs(stfts)
@@ -65,7 +59,4 @@ def train_input_fn(vocabulary,config):
     iterator = dataset.make_one_shot_iterator()
     return iterator.get_next()
 
-file = open("/home/surya/Desktop/seq2seq/config.json")
-config = json.load(file)
-vocabulary = Vocabulary()
-dataset = train_input_fn(vocabulary,config)
+

@@ -16,6 +16,7 @@ def create_model(data,config,is_training=True):
         
         batch_size=tf.shape(inputs)[0]
 
+        # Start of Encoder layers
         embedding_table = tf.Variable(name='embedding_table',shape=[VOCABULARY_SIZE,128],dtype=tf.float32,
                                         initializer = tf.truncated_normal_initializer(stddev=0.5))
         
