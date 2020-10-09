@@ -25,7 +25,7 @@ def create_model(data,config,is_training=True):
         
         
         cell_fw = ZoneoutWrapper(tf.keras.layers.LSTMCell(256,name="encoder_lstm_forward"),0.1,is_training=is_training)
-        cell_bw = ZoneoutWrapper(tf.keras.layers.LSTMCell(256,name="encoder_lstm_backwarf),0.1,is_training=is_training)
+        cell_bw = ZoneoutWrapper(tf.keras.layers.LSTMCell(256,name="encoder_lstm_backward"),0.1,is_training=is_training)
         
         outputs = tf.keras.layers.Bidirectional(cell_fw,backward_layer=cell_bw)
         
