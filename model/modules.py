@@ -19,3 +19,5 @@ def decoder_prenet(inputs,isTraining=False,name="decoder_prenet"):
          output = tf.keras.layers.Droput(0.5,name=name+"_droput_layer1")(output)
         
     return output
+
+def 
