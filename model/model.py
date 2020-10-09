@@ -1,7 +1,7 @@
 from tensorflow.keras.layers import Conv1D,LSTM,Bidirectional
 from modules import n_layer_1d_convolution
 from tensorflow.keras import Model
-
+from zoneout import ZoneoutWrapper
 
 VOCABULARY_SIZE=100
 
@@ -24,4 +24,8 @@ def create_model(data,config,is_training=True):
         conv_outputs = n_layer_1d_convolution(embedding_layer,n=3,filter_width=5,channels=512,name="convolution_encoder")
         
         
-        bidirectional = Bidirectional(LSTM(1024),merge_mode="concat")
+        cell_fw = ZoneoutWrapper(tf.keras.layers.LSTMCell(256,name="encoder_lstm_forward"),0.1,is_training=is_training)
+        cell_bw = ZoneoutWrapper(tf.keras.layers.LSTMCell(256,name="encoder_lstm_backwarf),0.1,is_training=is_training)
+        
+        outputs = tf.keras.layers.Bidirectional(cell_fw,backward_layer=cell_bw)
+        

@@ -1,5 +1,6 @@
 {
     "data":{
+<<<<<<< HEAD
         "num_csv_header_lines":0,
         "csv_columns":["audio_path","text","Normalized_Text"],
         "csv_column_defaults":[[""],[""],[""]],
@@ -15,5 +16,9 @@
     "general":{
         "data_root":"",
         "input_csv":"metadata.csv"
+=======
+        "num_csv_header_lines":1,
+        "csv_columns":["text","audio_path"]
+>>>>>>> 9376bd07b57453763da62db560e1987bd629b8bd
     }
 }
