@@ -2,12 +2,9 @@ from tensorflow.keras.layers import Conv1D, LSTM, Bidirectional, LSTMCell
 from modules import n_layer_1d_convolution
 from tensorflow.keras import Model
 from zoneout import ZoneoutWrapper
-<<<<<<< HEAD
 from attention import LocationSensitiveAttenetion
 from wrappers import DecoderPrenetWrapper
-=======
 import tensorflow as tf
->>>>>>> 7080f84629d35aa2ecfa9837b9b505f6e3b865a8
 
 VOCABULARY_SIZE=100
 
