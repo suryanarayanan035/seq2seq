@@ -1,5 +1,4 @@
 import tensorflow as tf
-
 def n_layer_1d_convolution(inputs,n,filter_width,channels,name="1d_convolution",is_training=False):
     conv_output= inputs
 
