@@ -22,17 +22,6 @@ def create_model(data,config,is_training=True):
 
         embedding_layer = tf.nn.embedding_lookup(embedding_table,inputs)
         conv_outputs = n_layer_1d_convolution(embedding_layer,n=3,filter_width=5,channels=512,name="convolution_encoder")
-<<<<<<< HEAD
-        
-        
-        cell_fw = ZoneoutWrapper(tf.keras.layers.LSTMCell(256,name="encoder_lstm_forward"),0.1,is_training=is_training)
-        cell_bw = ZoneoutWrapper(tf.keras.layers.LSTMCell(256,name="encoder_lstm_backward"),0.1,is_training=is_training)
-        
-        outputs = tf.keras.layers.Bidirectional(cell_fw,backward_layer=cell_bw)
-        
-=======
-
-
         cell_fw = ZoneoutWrapper(LSTMCell(256,name="encoder_lstm_forward"),0.1,is_training=is_training)
         cell_bw = ZoneoutWrapper(LSTMCell(256,name="encoder_lstm_backward"),0.1,is_training=is_training)
 
@@ -42,4 +31,3 @@ def create_model(data,config,is_training=True):
 
         decoder_cell_layer_1 = ZoneoutWrapper(LSTMCell(256, name='decoder_lstm_layer_1'), zoneout_drop_prob=0.1, is_training=is_training)
         decoder_cell_layer_2 = ZoneoutWrapper(LSTMCell(256, name='decoder_lstm_layer_2'), zoneout_drop_prob=0.1, is_training=is_training)
->>>>>>> ac546f67dfa00b4a88a96762361ed9f13c5b6368
