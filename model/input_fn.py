@@ -14,7 +14,7 @@ def parse_csv_line(line,vocabulary,config):
     audio_path,sample_rate = tf.read_file(features[config['data']['csv_columns'][1]])
     waveform =tf.audio.decode_wav(audio_path,desired_samples=config["data"]["sample_rate"])
     stfts = tf.signal.stft(waveform,frame_length = config["data"]["frame_length"],
-                           frame_step=config["data"]["frame_step"],fft_length=config["data"]["fft_length"]) 
+                           frame_step=config["data"]["frame_step"],fft_length=config["data"]["fft_length"])
     magnitude_spectrograms = tf.abs(stfts)
     num_spectrogram_bins = magnitude_spectrograms.shape[-1].value
 
@@ -41,7 +41,7 @@ def parse_csv_line(line,vocabulary,config):
         "debug_data":waveform
     }
 
-def train_input_fn(vocabulary,config):
+def train_input_fn(vocabulary, config):
     dataset = tf.data.TextLineDataset(config["general"]["input_csv"])
     dataset = dataset.map(lambda line:parse_csv_line(line,vocabulary,config))
     dataset = dataset.repeat(config["hyper_params"]["epochs"])
@@ -54,8 +54,7 @@ def train_input_fn(vocabulary,config):
                     "target_sequences_length":[],
                     "target_inputs":[None,config['data']['num_mel_bins']],
                     "debug_data":[None,None]
-                    
+
                 })
     iterator = dataset.make_one_shot_iterator()
     return iterator.get_next()
-

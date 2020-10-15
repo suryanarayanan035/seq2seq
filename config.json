@@ -1,19 +1,37 @@
 {
-    "data":{
-        "num_csv_header_lines":0,
-        "csv_columns":["audio_path","text","Normalized_Text"],
-        "csv_column_defaults":[[""],[""],[""]],
-        "sample_rate":22050,
-        "frame_step":512,
-        "frame_length":1024,
-        "fft_length":1024,
-        "num_mel_bins":80,
-        "lower_edge_hertz":80.0,
-        "upper_edge_hertz":7600.0
+
+  "model":{
+    "regularization":{
+      "encoder_convolution_dropout": 0.5,
+      "encoder_lstm_zoneout": 0.1,
+      "decoder_prenet_dropout": 0.5,
+      "decoder_lstm_zoneout": 0.1,
+      "decoder_projection_dropout": 0.5,
+      "postnet_convolution_dropout": 0.5
+    }
+  },
+  "data":{
+    "num_csv_header_lines":0,
+      "csv_columns":["audio_path","text","Normalized_Text"],
+      "csv_column_defaults":[[""],[""],[""]],
+      "sample_rate":22050,
+      "frame_step":512,
+      "frame_length":1024,
+      "fft_length":1024,
+      "num_mel_bins":80,
+      "lower_edge_hertz":80.0,
+      "upper_edge_hertz":7600.0
 
     },
+    "hyper_params":{
+      "epochs": 50,
+      "batch_size": 4,
+      "starting_learning_rate": 0.001,
+      "learning_rate_schedule": "t",
+      "optimizer": "ADAM"
+    },
     "general":{
-        "data_root":"",
-        "input_csv":"metadata.csv"
+      "data_root":"",
+      "input_csv":"metadata.csv"
     }
 }
