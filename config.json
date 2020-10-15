@@ -2,14 +2,16 @@
     "data":{
         "num_csv_header_lines":0,
         "csv_columns":["audio_path","text","Normalized_Text"],
-        "csv_column_defaults":[[""],[""],[""]],
+        "csv_column_defaults":[[""],[""]],
         "sample_rate":22050,
         "frame_step":512,
         "frame_length":1024,
         "fft_length":1024,
         "num_mel_bins":80,
         "lower_edge_hertz":80.0,
-        "upper_edge_hertz":7600.0
+        "upper_edge_hertz":7600.0,
+        "start_token": -1.0,
+        "end_token": -2.0
 
     },
     "general":{

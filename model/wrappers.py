@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras.layers import SimpleRNNCell
-from zoneout import ZoneoutWrapper
-from modules import decoder_prenet
+from model.zoneout import ZoneoutWrapper
+from model.modules import decoder_prenet
 
 class DecoderPrenetWrapper(SimpleRNNCell):
     def __init__(self,cell,is_training=True):
