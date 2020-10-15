@@ -1,9 +1,10 @@
 from tensorflow.keras.layers import Conv1D, LSTM, Bidirectional, LSTMCell
-from modules import n_layer_1d_convolution
+from model.modules import n_layer_1d_convolution
 from tensorflow.keras import Model
-from zoneout import ZoneoutWrapper
-from attention import LocationSensitiveAttenetion
-from wrappers import DecoderPrenetWrapper
+from model.zoneout import ZoneoutWrapper
+from model.attention import LocationSensitiveAttenetion
+from model.wrappers import DecoderPrenetWrapper,ConcatOutputAndAttentionWrapper
+import tensorflow as tf
 
 VOCABULARY_SIZE=100
 
@@ -29,12 +30,29 @@ def create_model(data,config,is_training=True):
 
         outputs = tf.keras.layers.Bidirectional(cell_fw,backward_layer=cell_bw)
 
-        outputs = tf.concat(outputs, axis=1, name='concat_blstm_outputs')
+        # Stacking rnn starts
 
-        decoder_cell_layer_1 = ZoneoutWrapper(LSTMCell(256, name='decoder_lstm_layer_1'), zoneout_drop_prob=0.1, is_training=is_training)
-        decoder_cell_layer_2 = ZoneoutWrapper(LSTMCell(256, name='decoder_lstm_layer_2'), zoneout_drop_prob=0.1, is_training=is_training)
+        model = tf.keras.Sequential([
+            Bidirectional(layer=cell_fw, merge_mode="concat", backward_layer=cell_bw),
+        ])
+        inputs = conv_outputs
 
-        attention_mechanism = LocationSensitiveAttenetion(num_units=128,name="decoder_attention_mechanism")
+        #mask = tf.expand_dims(input_sequence_lengths, dtype=tf.float32), axis=-1)
 
-        decoder_cell_layer_1 = DecoderPrenetWrapper(decoder_cell_layer_1)
-        decoder_cell_layer_1 = tfa.seq2seqAttentionWrapper()
+        #outputs = model(input, mask=mask)
+
+        # Stops here
+
+        # decoder_cell_layer_1 = ZoneoutWrapper(LSTMCell(256, name='decoder_lstm_layer_1'), zoneout_drop_prob=0.1, is_training=is_training)
+        # decoder_cell_layer_2 = ZoneoutWrapper(LSTMCell(256, name='decoder_lstm_layer_2'), zoneout_drop_prob=0.1, is_training=is_training)
+
+        # attention_mechanism = LocationSensitiveAttenetion(num_units=128,name="decoder_attention_mechanism")
+
+        # decoder_cell_layer_1 = DecoderPrenetWrapper(decoder_cell_layer_1)
+        # decoder_cell_layer_1 = tfa.seq2seq.AttentionWrapper(cell=decoder_cell_layer_1,
+        #                         attention_mechanism=attention_mechanism,
+        #                         output_attention=False,
+        #                         alignment_history=True)
+        # decoder_cell_layer_1 = ConcatOutputAndAttentionWrapper(decoder_cell_layer_2,
+        #                         linear_projection_size=config['data']['num_mel_bins'])
+        # stacked_decoder_cell = tf

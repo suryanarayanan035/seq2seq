@@ -1,5 +1,5 @@
 import tensorflow as tf 
-from tensorflowaddons.seq2seq import BahdanauAttention
+from tensorflow_addons.seq2seq import BahdanauAttention
 
 class LocationSensitiveAttenetion(BahdanauAttention):
     def __init(self,num_units,memory,memory_sequence_length=None,filters=20,kernel_size=7,name="LocationSensitiveAttention"):

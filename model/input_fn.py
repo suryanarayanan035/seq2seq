@@ -1,17 +1,23 @@
 import tensorflow as tf
 import librosa
+import pandas as pd
+
 def parse_csv_line(line,vocabulary,config):
 
     #Text file Loading
     fields = tf.io.decode_csv(line,config['data']['csv_column_defaults'])
     features = dict(zip(config['data']['csv_columns'],fields))
-    text = tf.compat.v1.string_split(features[config['data']['csv_columns'][0]],sep="")
-    text_idx = tf.SparseTensor(text.indices,tf.map_fn(vocabulary.text2idx,text.values,dtype="tf.float32"))
-    text_idx = tf.sparse_tensor_to_dense(text_idx)
-    text_idx = tf.squeeze(text_idx)
+    
+    #text = tf.compat.v1.string_split(features[config['data']['csv_columns'][1]],sep="")
+    #text_idx = tf.SparseTensor(text.indices,tf.map_fn(vocabulary.text2idx,text.values,dtype="tf.float32"))
+    #text_idx = tf.sparse_tensor_to_dense(text_idx)
+    #text_idx = tf.squeeze(text_idx)
+
+    text = tf.strings.split((features[config['data']['csv_columns'][1]],""))
+    print(text)
 
     #Audio filesloading
-    audio_path,sample_rate = tf.read_file(features[config['data']['csv_columns'][1]])
+    audio_path,sample_rate = tf.io.read_file(features[config['data']['csv_columns'][0]])
     waveform =tf.audio.decode_wav(audio_path,desired_samples=config["data"]["sample_rate"])
     stfts = tf.signal.stft(waveform,frame_length = config["data"]["frame_length"],
                            frame_step=config["data"]["frame_step"],fft_length=config["data"]["fft_length"]) 
@@ -41,8 +47,12 @@ def parse_csv_line(line,vocabulary,config):
         "debug_data":waveform
     }
 
+
 def train_input_fn(vocabulary,config):
-    dataset = tf.data.TextLineDataset(config["general"]["input_csv"])
+    dataset = tf.io.decode_csv(config["general"]["input_csv"],field_delim="|",record_defaults=config["data"]["csv_column_defaults"])
+    print(datset.shape)
+    dataset = tf.data.Dataset.from_tensor_slices(dataset)
+    print(type(dataset))
     dataset = dataset.map(lambda line:parse_csv_line(line,vocabulary,config))
     dataset = dataset.repeat(config["hyper_params"]["epochs"])
     dataset = dataset.shuffle(buffer_size=1000)
