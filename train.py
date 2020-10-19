@@ -1,5 +1,5 @@
 import tensorflow as tf 
-from model.model import create_model
+from model.models import create_model
 from model.input_fn import train_input_fn
 from model.loss import composite_loss
 from model.utils import Vocabulary

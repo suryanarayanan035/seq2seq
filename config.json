@@ -14,6 +14,13 @@
         "end_token": -2.0
 
     },
+    "hyper_params":{
+        "epochs": 50,
+        "batch_size": 4,
+        "starting_learning_rate": 0.001,
+        "learning_rate_schedule": "t",
+        "optimizer": "ADAM"
+      },
     "general":{
         "data_root":"",
         "input_csv":"metadata.csv"
